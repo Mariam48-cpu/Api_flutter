@@ -2,6 +2,9 @@ class EndPoints {
   static String baseUrl = "https://api.escuelajs.co/api/v1/";
   static String login = "auth/login";
   static String signUp = "users/";
+  static String profile = "auth/profile";
+  static String products = "products/";
+  static String categories = "categories/";
 }
 
 class ApiKeys {

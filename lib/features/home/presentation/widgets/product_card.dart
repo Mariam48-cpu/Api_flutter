@@ -2,18 +2,17 @@ import 'package:flutter/material.dart';
 
 class ProductCard extends StatelessWidget {
   final String title;
-  final double price;
+  final num price;
   final String description;
   final String image;
 
-  const ProductCard({
+  ProductCard({
     super.key,
     required this.title,
     required this.price,
     required this.description,
     required this.image,
   });
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -40,11 +39,27 @@ class ProductCard extends StatelessWidget {
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
-                borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(20),
+                ),
               ),
               child: Stack(
                 children: [
-                  const Center(child: Icon(Icons.shopping_bag_outlined, size: 40, color: Colors.blue)),
+                  Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Image.network(
+                        image,   
+                        fit: BoxFit.contain,
+                        errorBuilder: (context, error, stackTrace) =>
+                            const Icon(
+                              Icons.shopping_bag_outlined,
+                              size: 40,
+                              color: Colors.blue,
+                            ),
+                      ),
+                    ),
+                  ),
                   PositionBag(
                     top: 10,
                     right: 10,
@@ -54,7 +69,11 @@ class ProductCard extends StatelessWidget {
                         color: Colors.white,
                         shape: BoxShape.circle,
                       ),
-                      child: const Icon(Icons.favorite_border, size: 18, color: Colors.red),
+                      child: const Icon(
+                        Icons.favorite_border,
+                        size: 18,
+                        color: Colors.red,
+                      ),
                     ),
                   ),
                 ],
@@ -68,7 +87,10 @@ class ProductCard extends StatelessWidget {
               children: [
                 Text(
                   title,
-                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -97,7 +119,11 @@ class ProductCard extends StatelessWidget {
                         color: Colors.blue,
                         borderRadius: BorderRadius.circular(8),
                       ),
-                      child: const Icon(Icons.add, color: Colors.white, size: 20),
+                      child: const Icon(
+                        Icons.add,
+                        color: Colors.white,
+                        size: 20,
+                      ),
                     ),
                   ],
                 ),

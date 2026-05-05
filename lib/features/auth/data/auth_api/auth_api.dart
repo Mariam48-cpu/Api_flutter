@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:ecommerce_app_api_26/core/storage/storage_helper.dart';
 import 'package:ecommerce_app_api_26/features/auth/data/models/error_model.dart';
 import 'package:ecommerce_app_api_26/features/auth/data/models/request/login_request_model.dart';
 import 'package:ecommerce_app_api_26/features/auth/data/models/request/signup_request_model.dart';
@@ -66,7 +67,7 @@ class AuthApi {
   //     throw Exception(error.message);
   //   }
   // }
-
+  /// login
   Future<TokenModel> login(String email, String password) async {
     Uri url = Uri.parse(EndPoints.baseUrl + EndPoints.login);
     Map<String, dynamic> requestedBody = {
@@ -82,6 +83,8 @@ class AuthApi {
     var json = jsonDecode(response.body);
     if (response.statusCode == 200 || response.statusCode == 201) {
       TokenModel token = TokenModel.fromJson(json);
+      StorageHelper.saveToken(token.accessToken??"");
+
       return token;
     } else {
       ErroeModel error = ErroeModel.fromJson(json);
@@ -89,6 +92,7 @@ class AuthApi {
     }
   }
 
+  ///signUp
   Future<UserModel> signUp(String name, String email, String password) async {
     Uri url = Uri.parse(EndPoints.baseUrl + EndPoints.signUp);
     Map<String, dynamic> requestedBody = {
