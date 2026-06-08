@@ -19,7 +19,7 @@ class ProfileModel {
     this.updatedAt,
   });
 
-  ProfileModel.fromJson(Map<String, dynamic> json) {
+  ProfileModel.fromJson( dynamic json) {
     id = json['id'];
     email = json['email'];
     password = json['password'];

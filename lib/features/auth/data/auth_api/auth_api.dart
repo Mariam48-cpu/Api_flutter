@@ -83,7 +83,7 @@ class AuthApi {
     var json = jsonDecode(response.body);
     if (response.statusCode == 200 || response.statusCode == 201) {
       TokenModel token = TokenModel.fromJson(json);
-      StorageHelper.saveToken(token.accessToken??"");
+      StorageHelper.saveToken(token.accessToken ?? "");
 
       return token;
     } else {
@@ -114,7 +114,7 @@ class AuthApi {
     } else {
       ErroeModel error = ErroeModel.fromJson(json);
       throw Exception(
-        "   ${error.message} and statuscode is ${error.statusCode}",
+        "${error.message} and statuscode is ${error.statusCode}",
       );
     }
   }

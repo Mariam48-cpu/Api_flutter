@@ -8,6 +8,7 @@ class ProductsModel {
   List<String>? images;
   String? creationAt;
   String? updatedAt;
+  int? quantity;
 
   ProductsModel({
     this.id,
@@ -19,6 +20,7 @@ class ProductsModel {
     this.images,
     this.creationAt,
     this.updatedAt,
+    this.quantity,
   });
 
   ProductsModel.fromJson(Map<String, dynamic> json) {
@@ -33,6 +35,18 @@ class ProductsModel {
     images = json['images'].cast<String>();
     creationAt = json['creationAt'];
     updatedAt = json['updatedAt'];
+    quantity = json['quantity'] ?? 1;
+  }
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'title': title,
+      'slug': slug,
+      'price': price,
+      'description': description,
+      'images': images,
+      'quantity': quantity,
+    };
   }
 }
 

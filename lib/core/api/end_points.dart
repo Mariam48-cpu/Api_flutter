@@ -5,6 +5,8 @@ class EndPoints {
   static String profile = "auth/profile";
   static String products = "products/";
   static String categories = "categories/";
+  static String uploadImage = "files/upload";
+  static String updateProfile = "users";
 }
 
 class ApiKeys {
@@ -12,4 +14,5 @@ class ApiKeys {
   static String password = "password";
   static String name = "name";
   static String avatar = "avatar";
+  static String role = "role";
 }

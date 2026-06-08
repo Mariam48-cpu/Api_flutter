@@ -116,12 +116,7 @@ class HomeScreen extends StatelessWidget {
                     itemCount: products.length,
                     itemBuilder: (context, index) {
                       final product = products[index];
-                      return ProductCard(
-                        title: product.title ?? '',
-                        price: product.price ?? 0.0,
-                        description: product.description ?? '',
-                        image: product.images![0],
-                      );
+                      return ProductCard(product: product);
                     },
                   ),
                 );

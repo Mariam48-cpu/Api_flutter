@@ -4,9 +4,8 @@ class ProfileErrorModel {
 
   ProfileErrorModel({this.message, this.statusCode});
 
-  ProfileErrorModel.fromJson(Map<String, dynamic> json) {
+  ProfileErrorModel.fromJson(dynamic json) {
     message = json['message'];
     statusCode = json['statusCode'];
   }
-
 }

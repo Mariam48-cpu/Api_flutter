@@ -1,18 +1,11 @@
+import 'package:ecommerce_app_api_26/features/cart/cart_storage.dart';
+import 'package:ecommerce_app_api_26/features/home/models/products_model.dart';
 import 'package:flutter/material.dart';
 
 class ProductCard extends StatelessWidget {
-  final String title;
-  final num price;
-  final String description;
-  final String image;
+  final ProductsModel product;
 
-  ProductCard({
-    super.key,
-    required this.title,
-    required this.price,
-    required this.description,
-    required this.image,
-  });
+  const ProductCard({super.key, required this.product});
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -49,7 +42,7 @@ class ProductCard extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Image.network(
-                        image,   
+                        product.images?.first ?? '',
                         fit: BoxFit.contain,
                         errorBuilder: (context, error, stackTrace) =>
                             const Icon(
@@ -86,7 +79,7 @@ class ProductCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  title,
+                  product.title ?? '',
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
@@ -96,7 +89,7 @@ class ProductCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  description,
+                  product.description ?? '',
                   style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
@@ -106,23 +99,31 @@ class ProductCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      '\$$price',
+                      '\$${product.price ?? 0}',
                       style: const TextStyle(
                         color: Colors.blue,
                         fontWeight: FontWeight.bold,
                         fontSize: 18,
                       ),
                     ),
-                    Container(
-                      padding: const EdgeInsets.all(4),
-                      decoration: BoxDecoration(
-                        color: Colors.blue,
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: const Icon(
-                        Icons.add,
-                        color: Colors.white,
-                        size: 20,
+                    GestureDetector(
+                      onTap: () async {
+                        await CartStorage.addToCart(product);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                         SnackBar(content: Text("Added To Cart")),
+                        );
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.all(4),
+                        decoration: BoxDecoration(
+                          color: Colors.blue,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: const Icon(
+                          Icons.add,
+                          color: Colors.white,
+                          size: 20,
+                        ),
                       ),
                     ),
                   ],

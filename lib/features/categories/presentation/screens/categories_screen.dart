@@ -11,7 +11,6 @@ class CategoriesScreen extends StatefulWidget {
 }
 
 class _CategoriesScreenState extends State<CategoriesScreen> {
-  // 1. تعريف الـ Future خارج الـ build لمنع تكرار المناداة عند إعادة البناء
   late Future<List<CategoryModel>?> _categoriesFuture;
 
   @override
