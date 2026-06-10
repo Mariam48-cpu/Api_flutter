@@ -1,4 +1,5 @@
 import 'package:ecommerce_app_api_26/features/cart/cart_storage.dart';
+import 'package:ecommerce_app_api_26/features/home/models/card_model.dart';
 import 'package:ecommerce_app_api_26/features/home/models/products_model.dart';
 import 'package:flutter/material.dart';
 
@@ -10,7 +11,7 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
-  List<ProductsModel> cartItems = [];
+  List<CartModel> cartItems = [];
   bool isLoading = true;
 
   Future<void> getCart() async {
@@ -22,9 +23,11 @@ class _CartScreenState extends State<CartScreen> {
 
   double totalPrice() {
     double total = 0;
+
     for (var item in cartItems) {
-      total += (item.price ?? 0) * (item.quantity ?? 1);
+      total += item.price * item.quantity;
     }
+
     return total;
   }
 
@@ -51,36 +54,36 @@ class _CartScreenState extends State<CartScreen> {
               itemCount: cartItems.length,
               itemBuilder: (context, index) {
                 final product = cartItems[index];
-
                 return ListTile(
-                  leading: Image.network(product.images?.first ?? ''),
-                  title: Text(product.title ?? ''),
-                  subtitle: Text("${product.price ?? 0} EGP"),
+                  leading: Image.network(
+                    product.image,
+                    width: 60,
+                    errorBuilder: (_, __, ___) {
+                      return const Icon(Icons.image);
+                    },
+                  ),
+                  title: Text(product.title),
+                  subtitle: Text("${product.price} EGP"),
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       _buildQtyBtn(Icons.remove, () async {
-                        await CartStorage.decreaseQuantity(product.id!);
+                        await CartStorage.decreaseQuantity(product.id);
                         await getCart();
                       }),
-
                       SizedBox(width: 8),
-
-                      Text("${product.quantity ?? 1}"),
-
+                      Text("${product.quantity}"),
                       SizedBox(width: 8),
-
                       _buildQtyBtn(Icons.add, () async {
-                        await CartStorage.increaseQuantity(product.id!);
+                        await CartStorage.increaseQuantity(product.id);
                         await getCart();
                       }),
 
                       SizedBox(width: 8),
-
                       IconButton(
                         icon: Icon(Icons.delete),
                         onPressed: () async {
-                          await CartStorage.removeProduct(product.id!);
+                          await CartStorage.removeProduct(product.id);
                           await getCart();
                         },
                       ),

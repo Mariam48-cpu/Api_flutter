@@ -1,4 +1,5 @@
 import 'package:ecommerce_app_api_26/features/cart/cart_storage.dart';
+import 'package:ecommerce_app_api_26/features/home/models/card_model.dart';
 import 'package:ecommerce_app_api_26/features/home/models/products_model.dart';
 import 'package:flutter/material.dart';
 
@@ -108,9 +109,18 @@ class ProductCard extends StatelessWidget {
                     ),
                     GestureDetector(
                       onTap: () async {
-                        await CartStorage.addToCart(product);
+                        await CartStorage.addToCart(
+                          CartModel(
+                            id: product.id!,
+                            title: product.title!,
+                            price: product.price!.toDouble(),
+                            image: product.images?.first ?? '',
+                            quantity: 1,
+                            description: product.description ?? '',
+                          ),
+                        );
                         ScaffoldMessenger.of(context).showSnackBar(
-                         SnackBar(content: Text("Added To Cart")),
+                          SnackBar(content: Text("Added To Cart")),
                         );
                       },
                       child: Container(

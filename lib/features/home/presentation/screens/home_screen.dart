@@ -3,22 +3,18 @@ import 'package:ecommerce_app_api_26/features/home/models/products_model.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_app_api_26/features/home/presentation/widgets/product_card.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final List<Map<String, dynamic>> dummyProducts = List.generate(
-      10,
-      (index) => {
-        'id': index,
-        'title': 'Product ${index + 1}',
-        'description': 'Modern design for daily life',
-        'price': (index + 1) * 20.0,
-        'image': 'https://via.placeholder.com/150',
-      },
-    );
+  State<HomeScreen> createState() => _HomeScreenState();
+}
 
+class _HomeScreenState extends State<HomeScreen> {
+  String searchText = '';
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey.shade50,
       appBar: AppBar(
@@ -77,8 +73,13 @@ class HomeScreen extends StatelessWidget {
                     ),
                   ],
                 ),
-                child: const TextField(
-                  decoration: InputDecoration(
+                child: TextField(
+                  onChanged: (value) {
+                    setState(() {
+                      searchText = value;
+                    });
+                  },
+                  decoration: const InputDecoration(
                     hintText: 'Search products...',
                     border: InputBorder.none,
                     icon: Icon(Icons.search, color: Colors.blue),
@@ -88,19 +89,27 @@ class HomeScreen extends StatelessWidget {
             ),
 
             // Products Grid
-            FutureBuilder(
+            FutureBuilder<List<ProductsModel?>>(
               future: ProductsApi().getAllProducts(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator());
+                  return const Center(child: CircularProgressIndicator());
                 }
+
                 if (snapshot.hasError || snapshot.data == null) {
                   return const Center(child: Text("Error"));
                 }
-                final products = snapshot.data as List<ProductsModel>?;
-                if (products == null) {
-                  return const Center(child: Text("Error"));
-                }
+
+                final products = snapshot.data!;
+
+                final searchedProducts = products.where((product) {
+                  return product != null &&
+                      product.title != null &&
+                      product.title!.toLowerCase().contains(
+                        searchText.toLowerCase(),
+                      );
+                }).toList();
+
                 return Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: GridView.builder(
@@ -113,10 +122,10 @@ class HomeScreen extends StatelessWidget {
                           crossAxisSpacing: 16,
                           mainAxisSpacing: 16,
                         ),
-                    itemCount: products.length,
+                    itemCount: searchedProducts.length,
                     itemBuilder: (context, index) {
-                      final product = products[index];
-                      return ProductCard(product: product);
+                      final pro = searchedProducts[index]!;
+                      return ProductCard(product: pro);
                     },
                   ),
                 );

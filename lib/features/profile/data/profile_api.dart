@@ -63,6 +63,7 @@ class ProfileApi {
   /// upload image
   Future<String?> uploadImage(String avatar) async {
     Uri url = Uri.parse(EndPoints.baseUrl + EndPoints.uploadImage);
+
     var request = http.MultipartRequest('POST', url);
     request.files.add(await http.MultipartFile.fromPath('file', avatar));
     var streamResponse = await request.send();
@@ -77,3 +78,4 @@ class ProfileApi {
     }
   }
 }
+

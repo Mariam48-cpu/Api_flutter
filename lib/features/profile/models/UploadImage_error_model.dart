@@ -6,6 +6,4 @@ class UploadImageError {
     statusCode = json['statusCode'];
     message = json['message'];
   }
-
-
 }
